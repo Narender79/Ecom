@@ -3,20 +3,21 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Menu, X, LogOut } from 'lucide-react';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false); // mobile menu toggle
 
     //checks if user is logged in (stored in local storage)
-    const isLoggedIn = !!localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    const { user, logout: logoutAuth} = useContext(AuthContext);
     const { totalItems } = useContext(CartContext);
+    const isLoggedIn = !!user;
 
     //handle logout
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/'; // redirect to home
+        logoutAuth();
+        window.location.href = '/';
     };
 
     return (

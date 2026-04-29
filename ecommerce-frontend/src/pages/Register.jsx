@@ -31,6 +31,7 @@ export default function Register() {
 
         if (formData.password.length < 6) {
             setError("Password must be at least of length 6");
+            return ;
         }
 
         const mockUser = {
@@ -41,6 +42,14 @@ export default function Register() {
         login("demo-token", mockUser);
         navigate("/");
     };
+
+    const handleChange = (e) =>{
+        setFormData( (prev) =>({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
     return (
         <section className="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">Create Account</h1>

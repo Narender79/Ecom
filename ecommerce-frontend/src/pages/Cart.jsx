@@ -92,9 +92,9 @@ export default function Cart() {
                             <span>Rs. {totalPrice.toFixed(2)}</span>
                         </div>
                     </div>
-                    <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 mb-2">
+                    <Link to="/checkout/address" className="block text-center w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 mb-2" >
                         Proceed to Checkout
-                    </button>
+                    </Link>
                     <button
                         onClick={clearCart}
                         className="w-full bg-gray-200 text-gray-900 py-2 rounded-lg hover:bg-gray-300"
