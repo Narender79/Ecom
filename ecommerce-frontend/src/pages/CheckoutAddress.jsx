@@ -90,13 +90,6 @@ export default function CheckoutAddress() {
                         placeholder="Pincode"
                         className="w-full rounded-lg border px-4 py-2"
                     />
-                    <input
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        placeholder="Country"
-                        className="w-full rounded-lg border px-4 py-2"
-                    />
                 </div>
 
                 <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">

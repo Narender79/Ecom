@@ -13,6 +13,8 @@ import Profile from "./pages/Profile";
 import OrderDetails from "./pages/OrderDetails";
 import CheckoutAddress from "./pages/CheckoutAddress";
 import CheckoutPayment from "./pages/CheckoutPayment";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
 
             {/* Main content (grows to fill space) */}
             <main className="flex-grow max-w-7xl mx-auto w-full py-8 px-4">
+              <ToastContainer position="top-right" autoClose={2000} />
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Home />} />
