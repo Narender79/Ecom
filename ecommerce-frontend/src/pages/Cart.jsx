@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Trash2, Plus, Minus } from "lucide-react";
 import { CartContext } from "../context/CartContext";
+import { toast } from 'react-toastify';
 
 export default function Cart() {
     const { cartItems, updateQuantity, removeFromCart, totalPrice, clearCart } = useContext(CartContext);
@@ -62,7 +63,10 @@ export default function Cart() {
                                     </button>
                                 </div>
                                 <button
-                                    onClick={() => removeFromCart(item.id)}
+                                    onClick={() => {
+                                        removeFromCart(item.id);
+                                        toast.success("Item is removed from Cart successfully");
+                                    }}
                                     className="text-red-500 hover:text-red-700 flex items-center gap-1"
                                 >
                                     <Trash2 size={18} /> Remove

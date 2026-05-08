@@ -22,12 +22,8 @@ function App() {
       <CartProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-50">
-            {/* Navbar at top */}
             <Navbar />
-
-            {/* Main content (grows to fill space) */}
             <main className="flex-grow max-w-7xl mx-auto w-full py-8 px-4">
-              <ToastContainer position="top-right" autoClose={2000} />
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Home />} />
@@ -41,9 +37,8 @@ function App() {
                 <Route path="/checkout/payment" element={<CheckoutPayment />} />
               </Routes>
             </main>
-
-            {/* Footer at bottom */}
             <Footer />
+            <ToastContainer position="top-right" autoClose={2000} />
           </div>
         </Router>
       </CartProvider>

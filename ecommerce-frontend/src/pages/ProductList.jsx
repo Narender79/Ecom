@@ -1,4 +1,4 @@
-import {useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { fetchProducts } from "../services/productService";
 import { CartContext } from "../context/CartContext";
 import { toast } from 'react-toastify';
@@ -93,12 +93,13 @@ export default function ProductList() {
                             </div>
 
                             <button
-                                onClick={() =>{ addToCart(p);
+                                onClick={() => {
+                                    addToCart(p);
                                     toast.success("item added to Cart successfully");
                                 }}
                                 disabled={!p.isAvailable}
                                 className="mt-4 w-full rounded-lg px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                                >
+                            >
                                 {p.isAvailable ? "Add to Cart" : "Out of Stock"}
                             </button>
                         </article>
