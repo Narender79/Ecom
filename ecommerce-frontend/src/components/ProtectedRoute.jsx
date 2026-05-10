@@ -1,11 +1,9 @@
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 
 export default function ProtectedRoute({ children }){
-    //check if token exists in localStorage
-    const isLoggedIn = !!localStorage.getItem('token');
-
-    //if logged in , show the page (children)
-    // if not , redirect to login page
-
-    return isLoggedIn ? children: <Navigate to="/login"/>
+    const {isAuthenticated} = useContext(AuthContext);
+    return isAuthenticated ? children : <Navigate to="/login" replace/>;
 }

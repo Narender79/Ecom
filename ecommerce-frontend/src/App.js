@@ -15,6 +15,7 @@ import CheckoutAddress from "./pages/CheckoutAddress";
 import CheckoutPayment from "./pages/CheckoutPayment";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -31,10 +32,10 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/orders/:orderId" element={<OrderDetails />} />
-                <Route path="/checkout/address" element={<CheckoutAddress />} />
-                <Route path="/checkout/payment" element={<CheckoutPayment />} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/checkout/address" element={<ProtectedRoute><CheckoutAddress /></ProtectedRoute>} />
+                <Route path="/checkout/payment" element={<ProtectedRoute><CheckoutPayment /></ProtectedRoute>} />
+                <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
               </Routes>
             </main>
             <Footer />
