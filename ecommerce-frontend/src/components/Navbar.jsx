@@ -1,12 +1,13 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X, LogOut } from 'lucide-react';
+import { ShoppingCart, LogOut } from 'lucide-react';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false); // mobile menu toggle
+    // useState is one of the hooks in react and this represents the management of state in functional components.
+    // const [isOpen, setIsOpen] = useState(false); // mobile menu toggle
 
     //checks if user is logged in (stored in local storage)
 
@@ -67,16 +68,16 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <button
+                {/* <button
                     onClick={() => setIsOpen(!isOpen)}
                     className="md:hidden flex items-center gap-2"
                 >
                     {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                </button> */}
             </div>
 
             {/* Mobile Menu (appears when hamburger clicked) */}
-            {isOpen && (
+            {/* {isOpen && (
                 <div className="md:hidden bg-blue-700 px-4 py-4 space-y-3">
                     <Link to="/" className="block hover:text-blue-200">Home</Link>
                     <Link to="/products" className="block hover:text-blue-200">Products</Link>
@@ -96,7 +97,7 @@ export default function Navbar() {
                         </>
                     )}
                 </div>
-            )}
+            )} */}
         </nav>
     );
 }
