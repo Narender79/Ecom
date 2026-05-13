@@ -27,6 +27,8 @@ public class AuthController {
 
     public ServerResponse loginHandler(ServerRequest request) throws Exception {
         LoginRequest body = request.body(LoginRequest.class);
-        return ServerResponse.ok().body(new ApiResponse("User logged in successfully", true));
+        ApiResponse response = authService.login(body);
+
+        return ServerResponse.ok().body(response);
     }
 }

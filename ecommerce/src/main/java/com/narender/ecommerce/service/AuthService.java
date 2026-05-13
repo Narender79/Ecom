@@ -49,6 +49,15 @@ public class AuthService {
     }
 
     public ApiResponse login(LoginRequest request){
+        var user = userRepository.findByEmail(request.getEmail());
+        if(user.isEmpty()){
+            return new ApiResponse("User is not found", false);
+        }
+
+        User foundUser = user.get();
+        if(!passwordEncoder.matches(request.getPassword(), foundUser.getPassword())){
+            return new ApiResponse("Invalid password",false);
+        }
 
         return new ApiResponse("User successfully loged in", false);
     }
