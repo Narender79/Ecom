@@ -1,20 +1,32 @@
 package com.narender.ecommerce.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.servlet.function.ServerResponse;
+
+import com.narender.ecommerce.dto.LoginRequest;
+import com.narender.ecommerce.dto.RegisterRequest;
+import com.narender.ecommerce.service.AuthService;
+
 @RestController
 @RequestMapping("/api/auth")
 
 public class AuthController {
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Object userRequest){
-        return ResponseEntity.ok(new ApiResponse("User register successfully",true));
+    @Autowired
+    private AuthService authService;
+
+    // Handler methods for functional routing
+    public ServerResponse registerHandler(ServerRequest request) throws Exception {
+        RegisterRequest body = request.body(RegisterRequest.class);
+        ApiResponse response = authService.register(body);
+
+        return ServerResponse.ok().body(response);
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Object loginRequest) {
-        return ResponseEntity.ok(new ApiResponse("User logged in successfully", true));
+
+    public ServerResponse loginHandler(ServerRequest request) throws Exception {
+        LoginRequest body = request.body(LoginRequest.class);
+        return ServerResponse.ok().body(new ApiResponse("User logged in successfully", true));
     }
 }

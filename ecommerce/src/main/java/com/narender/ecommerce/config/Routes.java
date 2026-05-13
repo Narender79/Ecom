@@ -1,13 +1,20 @@
 package com.narender.ecommerce.config;
 
-import com.narender.ecommerce.controller.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import static org.springframework.web.servlet.function.RequestPredicates.DELETE;
+import static org.springframework.web.servlet.function.RequestPredicates.GET;
+import static org.springframework.web.servlet.function.RequestPredicates.POST;
+import static org.springframework.web.servlet.function.RequestPredicates.PUT;
 import org.springframework.web.servlet.function.RouterFunction;
+import static org.springframework.web.servlet.function.RouterFunctions.route;
 import org.springframework.web.servlet.function.ServerResponse;
 
-import static org.springframework.web.servlet.function.RequestPredicates.*;
-import static org.springframework.web.servlet.function.RouterFunctions.route;
+import com.narender.ecommerce.controller.AuthController;
+import com.narender.ecommerce.controller.CartController;
+import com.narender.ecommerce.controller.OrderController;
+import com.narender.ecommerce.controller.ProductController;
+import com.narender.ecommerce.controller.UserController;
 
 @Configuration
 public class Routes {
@@ -30,26 +37,26 @@ public class Routes {
 
     @Bean
     public RouterFunction<ServerResponse> apiRoutes() {
-        return route(POST("/api/auth/register"), authController::register)
-                .andRoute(POST("/api/auth/login"), authController::login)
+        return route(POST("/api/auth/register"), req -> authController.registerHandler(req))
+                .andRoute(POST("/api/auth/login"), req -> authController.loginHandler(req))
                 
-                .andRoute(GET("/api/users/me"), userController::getMe)
-                .andRoute(GET("/api/users/{id}"), userController::getUserById)
-                .andRoute(POST("/api/users/settings"), userController::updateSettings)
+                .andRoute(GET("/api/users/me"), req -> userController.getMeHandler(req))
+                .andRoute(GET("/api/users/{id}"), req -> userController.getUserByIdHandler(req))
+                .andRoute(POST("/api/users/settings"), req -> userController.updateSettingsHandler(req))
                 
-                .andRoute(GET("/api/products"), productController::getAllProducts)
-                .andRoute(GET("/api/products/{id}"), productController::getProductById)
-                .andRoute(POST("/api/products"), productController::addProduct)
-                .andRoute(PUT("/api/products/{id}"), productController::updateProduct)
-                .andRoute(DELETE("/api/products/{id}"), productController::deleteProduct)
+                .andRoute(GET("/api/products"), req -> productController.getAllProductsHandler(req))
+                .andRoute(GET("/api/products/{id}"), req -> productController.getProductByIdHandler(req))
+                .andRoute(POST("/api/products"), req -> productController.addProductHandler(req))
+                .andRoute(PUT("/api/products/{id}"), req -> productController.updateProductHandler(req))
+                .andRoute(DELETE("/api/products/{id}"), req -> productController.deleteProductHandler(req))
                 
-                .andRoute(GET("/api/cart"), cartController::getCart)
-                .andRoute(POST("/api/cart"), cartController::addToCart)
-                .andRoute(PUT("/api/cart/{id}"), cartController::updateCart)
-                .andRoute(DELETE("/api/cart/{id}"), cartController::removeFromCart)
+                .andRoute(GET("/api/cart"), req -> cartController.getCartHandler(req))
+                .andRoute(POST("/api/cart"), req -> cartController.addToCartHandler(req))
+                .andRoute(PUT("/api/cart/{id}"), req -> cartController.updateCartHandler(req))
+                .andRoute(DELETE("/api/cart/{id}"), req -> cartController.removeFromCartHandler(req))
                 
-                .andRoute(GET("/api/orders"), orderController::getOrders)
-                .andRoute(POST("/api/orders"), orderController::createOrder)
-                .andRoute(GET("/api/orders/{id}"), orderController::getOrderById);
+                .andRoute(GET("/api/orders"), req -> orderController.getOrdersHandler(req))
+                .andRoute(POST("/api/orders"), req -> orderController.createOrderHandler(req))
+                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderByIdHandler(req));
     }
 }
