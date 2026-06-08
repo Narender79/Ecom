@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import api from "../services/api";
+import { toast } from "react-toastify";
 
 export default function Register() {
-    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -14,33 +14,49 @@ export default function Register() {
     });
 
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
 
-        if (!formData.fullName || !formData.email || !formData.password) {
+        if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
             setError("Please fill in all fields.");
             return;
         }
 
         if (formData.password !== formData.confirmPassword) {
-            setError("Password do not match");
+            setError("Passwords do not match");
             return;
         }
 
         if (formData.password.length < 6) {
-            setError("Password must be at least of length 6");
+            setError("Password must be at least 6 characters long");
             return ;
         }
 
-        const mockUser = {
-            fullName: formData.fullName,
-            email: formData.email,
-        };
+        setLoading(true);
+        try {
+            const payload = {
+                name: formData.fullName,
+                email: formData.email,
+                password: formData.password,
+                confirmPassword: formData.confirmPassword
+            };
 
-        login("demo-token", mockUser);
-        navigate("/");
+            const response = await api.post("/auth/register", payload);
+
+            if (response.data.success) {
+                toast.success("Account created successfully! Please login.");
+                navigate("/login");
+            } else {
+                setError(response.data.message || "Registration failed.");
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || "Registration failed. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleChange = (e) =>{
@@ -72,6 +88,7 @@ export default function Register() {
                         onChange={handleChange}
                         className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="John Doe"
+                        disabled={loading}
                     />
                 </div>
 
@@ -86,6 +103,7 @@ export default function Register() {
                         onChange={handleChange}
                         className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="you@example.com"
+                        disabled={loading}
                     />
                 </div>
 
@@ -100,6 +118,7 @@ export default function Register() {
                         onChange={handleChange}
                         className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="••••••••"
+                        disabled={loading}
                     />
                 </div>
 
@@ -114,14 +133,16 @@ export default function Register() {
                         onChange={handleChange}
                         className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="••••••••"
+                        disabled={loading}
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700"
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400"
+                    disabled={loading}
                 >
-                    Sign Up
+                    {loading ? "Registering..." : "Sign Up"}
                 </button>
             </form>
 
