@@ -1,4 +1,4 @@
-package com.narender.ecommerce.controller;
+package com.narender.ecommerce.dto;
 
 public class ApiResponse {
     

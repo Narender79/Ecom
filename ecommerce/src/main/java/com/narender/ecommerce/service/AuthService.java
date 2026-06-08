@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.narender.ecommerce.controller.ApiResponse;
+import com.narender.ecommerce.dto.ApiResponse;
 import com.narender.ecommerce.dto.LoginRequest;
 import com.narender.ecommerce.dto.RegisterRequest;
 import com.narender.ecommerce.model.User;
@@ -59,6 +59,6 @@ public class AuthService {
             return new ApiResponse("Invalid password",false);
         }
 
-        return new ApiResponse("User successfully loged in", false);
+        return new ApiResponse("User successfully logged in", true);
     }
 }
