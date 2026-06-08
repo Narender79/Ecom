@@ -11,16 +11,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order_items")
-public class OrderItem {
+@Table(name = "cart_items")
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -29,32 +29,25 @@ public class OrderItem {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false)
-    private double price;
-
     // Constructors
-    public OrderItem() {}
+    public CartItem() {}
 
-    public OrderItem(Order order, Product product, int quantity, double price) {
-        this.order = order;
+    public CartItem(User user, Product product, int quantity) {
+        this.user = user;
         this.product = product;
         this.quantity = quantity;
-        this.price = price;
     }
 
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Order getOrder() { return order; }
-    public void setOrder(Order order) { this.order = order; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
-
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
 }
