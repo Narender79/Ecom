@@ -6,7 +6,7 @@ export const CartContext = createContext();
 
 export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([]);
-    const [isAuthenticated] = useContext(AuthContext);
+    const { isAuthenticated } = useContext(AuthContext);
 
     // Fetch the database cart from backend when user is authenticated
     const fetchCart = useCallback(async () => {
@@ -96,7 +96,7 @@ export function CartProvider({ children }) {
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     //calculate total price
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const value = {
         cartItems,
