@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
 
         async function checkAuth(){
             try{
-                const response = await.api.get("/users/me");
+                const response = await api.get("/users/me");
                 if(response.data.success){
                     setUser(response.data.data);
                 }else{
