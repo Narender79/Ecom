@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import api from "../services/api";
 
 export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
@@ -24,6 +25,24 @@ export function AuthProvider({ children }) {
         }
     },[user]);
 
+    // Verify token and fetch fresh user details on application startup
+    useEffect(()=>{
+        if(!token) return;
+
+        async function checkAuth(){
+            try{
+                const response = await.api.get("/users/me");
+                if(response.data.success){
+                    setUser(response.data.data);
+                }else{
+                    logout();
+                }
+            }catch(error){
+                console.error("Session verification failed:", error);
+                logout();
+            }
+        }
+    }, [token] );
     const login = (newToken, newUser) => {
         setToken(newToken);
         setUser(newUser);
