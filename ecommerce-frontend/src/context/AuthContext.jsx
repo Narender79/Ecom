@@ -42,6 +42,7 @@ export function AuthProvider({ children }) {
                 logout();
             }
         }
+        checkAuth();
     }, [token] );
     const login = (newToken, newUser) => {
         setToken(newToken);
