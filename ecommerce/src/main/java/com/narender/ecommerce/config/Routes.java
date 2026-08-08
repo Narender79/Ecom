@@ -45,6 +45,7 @@ public class Routes {
                 .andRoute(POST("/api/users/settings"), req -> userController.updateSettingsHandler(req))
 
                 .andRoute(GET("/api/products"), req -> productController.getAllProductsHandler(req))
+                .andRoute(GET("/api/products/featured"), req -> productController.getFeatureProductHandler(req))
                 .andRoute(GET("/api/products/{id}"), req -> productController.getProductByIdHandler(req))
                 .andRoute(POST("/api/products"), req -> productController.addProductHandler(req))
                 .andRoute(PUT("/api/products/{id}"), req -> productController.updateProductHandler(req))
@@ -58,5 +59,5 @@ public class Routes {
                 .andRoute(GET("/api/orders"), req -> orderController.getOrdersHandler(req))
                 .andRoute(POST("/api/orders"), req -> orderController.createOrderHandler(req))
                 .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderByIdHandler(req));
-    }
+            }
 }
