@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.narender.ecommerce.dto.ApiResponse;
 import com.narender.ecommerce.dto.ProductRequest;
 import com.narender.ecommerce.repository.ProductRepository;
+import com.narender.ecommerce.service.FeaturedProductService;
 import com.narender.ecommerce.model.Product;
 
 @RestController
@@ -25,6 +26,8 @@ import com.narender.ecommerce.model.Product;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private FeaturedProductService featuredProductService;
 
     @GetMapping
     public ServerResponse getAllProducts(ServerRequest request) throws Exception {
@@ -103,4 +106,11 @@ public class ProductController {
     public ServerResponse deleteProductHandler(ServerRequest request) throws Exception {
         return deleteProduct(request);
     }
+
+    public ServerResponse getFeatureProductHandler(ServerRequest request) throws Exception{
+        List<Product> featured = featuredProductService.getFeaturedProducts();
+
+        return ServerResponse.ok().body(new ApiResponse("Featured Products", true,featured)); 
+    }
+
 }
