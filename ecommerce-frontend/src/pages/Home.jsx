@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Truck, Shield, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fetchFeaturedProducts } from "../services/productService";
+import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
