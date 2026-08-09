@@ -71,7 +71,7 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-2xl font-bold">Free Shipping over Rs. 500</h3>
+            <h3 className="text-2xl font-bold">Free Shipping over Rs. 2000</h3>
             <p className="mt-1 text-sm text-white/90">Fast delivery and easy returns</p>
           </div>
           <Link to="/products" className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold">Shop Offers</Link>
