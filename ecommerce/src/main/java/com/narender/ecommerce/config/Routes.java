@@ -37,27 +37,27 @@ public class Routes {
 
     @Bean
     public RouterFunction<ServerResponse> apiRoutes() {
-        return route(POST("/api/auth/register"), req -> authController.registerHandler(req))
-                .andRoute(POST("/api/auth/login"), req -> authController.loginHandler(req))
+        return route(POST("/api/auth/register"), req -> authController.register(req))
+                .andRoute(POST("/api/auth/login"), req -> authController.login(req))
 
-                .andRoute(GET("/api/users/me"), req -> userController.getMeHandler(req))
-                .andRoute(GET("/api/users/{id}"), req -> userController.getUserByIdHandler(req))
-                .andRoute(POST("/api/users/settings"), req -> userController.updateSettingsHandler(req))
+                .andRoute(GET("/api/users/me"), req -> userController.getMe(req))
+                .andRoute(GET("/api/users/{id}"), req -> userController.getUserById(req))
+                .andRoute(POST("/api/users/settings"), req -> userController.updateSettings(req))
 
-                .andRoute(GET("/api/products"), req -> productController.getAllProductsHandler(req))
-                .andRoute(GET("/api/products/featured"), req -> productController.getFeatureProductHandler(req))
-                .andRoute(GET("/api/products/{id}"), req -> productController.getProductByIdHandler(req))
-                .andRoute(POST("/api/products"), req -> productController.addProductHandler(req))
-                .andRoute(PUT("/api/products/{id}"), req -> productController.updateProductHandler(req))
-                .andRoute(DELETE("/api/products/{id}"), req -> productController.deleteProductHandler(req))
+                .andRoute(GET("/api/products"), req -> productController.getAllProducts(req))
+                .andRoute(GET("/api/products/featured"), req -> productController.getFeatureProduct(req))
+                .andRoute(GET("/api/products/{id}"), req -> productController.getAllProducts(req))
+                .andRoute(POST("/api/products"), req -> productController.addProduct(req))
+                .andRoute(PUT("/api/products/{id}"), req -> productController.updateProduct(req))
+                .andRoute(DELETE("/api/products/{id}"), req -> productController.deleteProduct(req))
 
-                .andRoute(GET("/api/cart"), req -> cartController.getCartHandler(req))
-                .andRoute(POST("/api/cart"), req -> cartController.addToCartHandler(req))
-                .andRoute(PUT("/api/cart/{id}"), req -> cartController.updateCartHandler(req))
-                .andRoute(DELETE("/api/cart/{id}"), req -> cartController.removeFromCartHandler(req))
+                .andRoute(GET("/api/cart"), req -> cartController.getCart(req))
+                .andRoute(POST("/api/cart"), req -> cartController.addToCart(req))
+                .andRoute(PUT("/api/cart/{id}"), req -> cartController.updateCart(req))
+                .andRoute(DELETE("/api/cart/{id}"), req -> cartController.removeFromCart(req))
 
-                .andRoute(GET("/api/orders"), req -> orderController.getOrdersHandler(req))
-                .andRoute(POST("/api/orders"), req -> orderController.createOrderHandler(req))
-                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderByIdHandler(req));
+                .andRoute(GET("/api/orders"), req -> orderController.getOrders(req))
+                .andRoute(POST("/api/orders"), req -> orderController.createOrder(req))
+                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderById(req));
             }
 }

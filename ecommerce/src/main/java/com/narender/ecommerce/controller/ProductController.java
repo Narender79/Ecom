@@ -2,13 +2,10 @@ package com.narender.ecommerce.controller;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.function.ServerRequest;
@@ -86,28 +83,8 @@ public class ProductController {
         return ServerResponse.ok().body(new ApiResponse("Product deleted",true)) ;
     }
 
-    // Handler methods for functional routing
-    public ServerResponse getAllProductsHandler(ServerRequest request) throws Exception {
-        return getAllProducts(request);
-    }
 
-    public ServerResponse getProductByIdHandler(ServerRequest request) throws Exception {
-        return getProductById(request);
-    }
-
-    public ServerResponse addProductHandler(ServerRequest request) throws Exception {
-        return addProduct(request);
-    }
-
-    public ServerResponse updateProductHandler(ServerRequest request) throws Exception {
-        return updateProduct(request);
-    }
-
-    public ServerResponse deleteProductHandler(ServerRequest request) throws Exception {
-        return deleteProduct(request);
-    }
-
-    public ServerResponse getFeatureProductHandler(ServerRequest request) throws Exception{
+    public ServerResponse getFeatureProduct(ServerRequest request) throws Exception{
         List<Product> featured = featuredProductService.getFeaturedProducts();
 
         return ServerResponse.ok().body(new ApiResponse("Featured Products", true,featured)); 

@@ -127,22 +127,4 @@ public class CartController {
                 .body(new ApiResponse("Item not found in cart", false));
     }
 
-    // Handler methods for functional routing
-    // Handler methods for functional routing
-    public ServerResponse getCartHandler(ServerRequest request) throws Exception {
-        return getCart(request);
-    }
-
-    public ServerResponse addToCartHandler(ServerRequest request) throws Exception {
-        return addToCart(request);
-    }
-
-    public ServerResponse updateCartHandler(ServerRequest request) throws Exception {
-        return updateCart(request);
-    }
-
-    public ServerResponse removeFromCartHandler(ServerRequest request) throws Exception {
-        return removeFromCart(request);
-    }
-
 }

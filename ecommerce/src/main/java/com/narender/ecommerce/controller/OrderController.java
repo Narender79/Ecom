@@ -103,17 +103,4 @@ public class OrderController {
                 .orElseGet(() -> ServerResponse.status(org.springframework.http.HttpStatus.NOT_FOUND)
                         .body(new ApiResponse("Order not found", false)));
     }
-
-    // Handler methods for functional routing
-    public ServerResponse getOrdersHandler(ServerRequest request) throws Exception {
-        return getOrders(request);
-    }
-
-    public ServerResponse createOrderHandler(ServerRequest request) throws Exception {
-        return createOrder(request);
-    }
-
-    public ServerResponse getOrderByIdHandler(ServerRequest request) throws Exception {
-        return getOrderById(request);
-    }
 }

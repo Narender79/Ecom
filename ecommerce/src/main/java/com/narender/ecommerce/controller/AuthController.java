@@ -19,14 +19,14 @@ public class AuthController {
     private AuthService authService;
 
     // Handler methods for functional routing
-    public ServerResponse registerHandler(ServerRequest request) throws Exception {
+    public ServerResponse register(ServerRequest request) throws Exception {
         RegisterRequest body = request.body(RegisterRequest.class);
         ApiResponse response = authService.register(body);
 
         return ServerResponse.ok().body(response);
     }
 
-    public ServerResponse loginHandler(ServerRequest request) throws Exception {
+    public ServerResponse login(ServerRequest request) throws Exception {
         LoginRequest body = request.body(LoginRequest.class);
         ApiResponse response = authService.login(body);
 

@@ -32,7 +32,7 @@ public class UserController {
     }
 
     // Handler methods for functional routing
-    public ServerResponse getMeHandler(ServerRequest request) throws Exception {
+    public ServerResponse getMe(ServerRequest request) throws Exception {
         try{
             User user = getAuthenticatedUser();
             Map<String,Object> userData = new HashMap<>();
@@ -45,12 +45,12 @@ public class UserController {
         }
     }
 
-    public ServerResponse getUserByIdHandler(ServerRequest request) throws Exception {
+    public ServerResponse getUserById(ServerRequest request) throws Exception {
         Long id = Long.parseLong(request.pathVariable("id"));
         return ServerResponse.ok().body(new ApiResponse("User retrieved", true));
     }
 
-    public ServerResponse updateSettingsHandler(ServerRequest request) throws Exception {
+    public ServerResponse updateSettings(ServerRequest request) throws Exception {
         Object body = request.body(Object.class);
         return ServerResponse.ok().body(new ApiResponse("User settings updated", true));
     }
