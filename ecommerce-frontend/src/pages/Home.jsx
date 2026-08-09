@@ -1,134 +1,82 @@
 import { Link } from "react-router-dom";
-import { ShoppingBag, Truck, Shield, Star } from "lucide-react";
-import { useEffect, useState } from "react";
-import { fetchFeaturedProducts } from "../services/productService";
+import HeroCarousel from "../components/HeroCarousel";
 import ProductCard from "../components/ProductCard";
+import { useEffect, useState, useContext } from "react";
+import { fetchFeaturedProducts } from "../services/productService";
+import { CartContext } from "../context/CartContext";
 
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loadingFeatured, setLoadingFeatured] = useState(true);
-  const [featuredError, setFeaturedError] = useState("");
+  const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     let active = true;
-    async function loadFeatureProducts() {
-      setLoadingFeatured(true);
-      setFeaturedError("");
-
+    (async () => {
       try {
         const data = await fetchFeaturedProducts();
         if (!active) return;
-
-        setFeaturedProducts(Array.isArray(data) ? data : []);
-      } catch (error) {
+        setFeatured(Array.isArray(data) ? data : []);
+      } catch {
         if (!active) return;
-
-        setFeaturedError("Could not load featured products.");
-        setFeaturedProducts([]);
+        setFeatured([]);
       } finally {
-        if (active) setLoadingFeatured(false);
+        if (active) setLoading(false);
       }
-    }
-
-    loadFeatureProducts();
-
-    return () => {
-      active = false;
-    };
+    })();
+    return () => { active = false; };
   }, []);
+
+  const categories = [
+    { title: "Electronics", href: "/products?cat=Electronics" },
+    { title: "Fashion", href: "/products?cat=Fashion" },
+    { title: "Furniture", href: "/products?cat=Furniture" },
+    { title: "Accessories", href: "/products" }
+  ];
+
   return (
     <div className="space-y-12">
-      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20 rounded-lg">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold mb-4">Welcome to EcomHub</h1>
-          <p className="text-xl mb-8">Shop the best products at unbeatable prices</p>
-          <Link to="/products" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
-            Shop Now
-          </Link>
+      <HeroCarousel />
+
+      <section className="max-w-6xl mx-auto px-4">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-4 gap-4">
+          {categories.map((c) => (
+            <Link key={c.title} to={c.href} className="block bg-white rounded-lg p-6 shadow hover:shadow-lg transition text-center">
+              <h3 className="font-semibold text-lg">{c.title}</h3>
+              <p className="mt-2 text-sm text-gray-500">Explore {c.title}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <FeatureCard
-          icon={<ShoppingBag size={40} />}
-          title="Wide Selection"
-          description="Thousands of products to choose from"
-        />
-        <FeatureCard
-          icon={<Truck size={40} />}
-          title="Fast Shipping"
-          description="Free shipping on orders over $50"
-        />
-        <FeatureCard
-          icon={<Shield size={40} />}
-          title="Secure Payment"
-          description="100% secure checkout process"
-        />
-        <FeatureCard
-          icon={<Star size={40} />}
-          title="Best Prices"
-          description="Lowest prices guaranteed"
-        />
-      </section>
-
-      <section>
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold">Featured Products</h2>
-          <Link to="/products" className="text-blue-600 font-medium hover:underline">
-            View all products
-          </Link>
+      <section className="max-w-6xl mx-auto px-4">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Featured Products</h2>
+          <Link to="/products" className="text-blue-600 font-medium">View all</Link>
         </div>
 
-        {featuredError && (
-          <div className="mb-4 rounded-md bg-amber-100 text-amber-800 px-4 py-2 text-sm">
-            {featuredError}
-          </div>
-        )}
-
-        {loadingFeatured ? (
-          <p className="text-gray-500 text-center">Loading featured products...</p>
-        ) : featuredProducts.length === 0 ? (
-          <p className="text-gray-500 text-center">No featured products found.</p>
+        {loading ? (
+          <p className="text-gray-500">Loading featured...</p>
+        ) : featured.length === 0 ? (
+          <p className="text-gray-500">No featured products yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <article key={product.id} className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-                <div className="h-44 bg-gray-100 flex items-center justify-center">
-                  {product.imageUrl ? (
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-gray-400">No image</span>
-                  )}
-                </div>
-
-                <div className="p-4 space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
-                  <p className="text-sm text-gray-500">{product.category || "General"}</p>
-                  <p className="text-xl font-bold text-blue-700">Rs. {product.price}</p>
-                  {!product.isAvailable && (
-                    <p className="text-sm text-red-600">Out of stock</p>
-                  )}
-                </div>
-              </article>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featured.map((p) => (
+              <ProductCard key={p.id} product={p} onAddToCart={addToCart} />
             ))}
           </div>
         )}
       </section>
-    </div>
-  );
-}
 
-// Reusable Feature Card Component
-function FeatureCard({ icon, title, description }) {
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-lg transition">
-      <div className="text-blue-600 mb-4 flex justify-center">{icon}</div>
-      <h3 className="font-bold text-lg mb-2">{title}</h3>
-      <p className="text-gray-600 text-sm">{description}</p>
+      <section className="max-w-6xl mx-auto px-4 py-12">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-2xl font-bold">Free Shipping over Rs. 500</h3>
+            <p className="mt-1 text-sm text-white/90">Fast delivery and easy returns</p>
+          </div>
+          <Link to="/products" className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold">Shop Offers</Link>
+        </div>
+      </section>
     </div>
   );
 }
