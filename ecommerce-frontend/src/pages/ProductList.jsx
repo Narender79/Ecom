@@ -3,12 +3,7 @@ import { fetchProducts } from "../services/productService";
 import { CartContext } from "../context/CartContext";
 import { toast } from 'react-toastify';
 
-const MOCK_PRODUCTS = [
-    { id: 1, name: "Wireless Headphones", category: "Electronics", price: 2999, imageUrl: "", isAvailable: true },
-    { id: 2, name: "Running Shoes", category: "Fashion", price: 1999, imageUrl: "", isAvailable: true },
-    { id: 3, name: "Office Chair", category: "Furniture", price: 6499, imageUrl: "", isAvailable: true },
-    { id: 4, name: "Smart Watch", category: "Electronics", price: 4999, imageUrl: "", isAvailable: false },
-];
+
 
 
 export default function ProductList() {
@@ -29,8 +24,8 @@ export default function ProductList() {
                 setProducts(Array.isArray(data) ? data : []);
             } catch (e) {
                 if (!active) return;
-                setError("Backend not connected yet,show demo product.");
-                setProducts(MOCK_PRODUCTS);
+                setError("We are facing some issue and we are working on it.");
+                setProducts([]);
             } finally {
                 if (active) setLoading(false);
             }
@@ -97,10 +92,10 @@ export default function ProductList() {
                                     addToCart(p);
                                     toast.success("item added to Cart successfully");
                                 }}
-                                disabled={!p.isAvailable}
+                                disabled={!p.available}
                                 className="mt-4 w-full rounded-lg px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
-                                {p.isAvailable ? "Add to Cart" : "Out of Stock"}
+                                {p.available ? "Add to Cart" : "Out of Stock"}
                             </button>
                         </article>
                     ))}
