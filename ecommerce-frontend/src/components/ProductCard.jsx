@@ -23,10 +23,10 @@ export default function ProductCard({ product, onAddToCart }) {
           <span className="text-xl font-bold text-blue-700">Rs. {product.price}</span>
           <button
             onClick={() => onAddToCart && onAddToCart(product)}
-            disabled={!product.isAvailable}
+            disabled={!product.available}
             className="ml-3 px-3 py-1 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400"
           >
-            {product.isAvailable ? "Add" : "Out"}
+            {product.available ? "Add" : "Out"}
           </button>
         </div>
       </div>
