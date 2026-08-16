@@ -19,13 +19,12 @@ export function AuthProvider({ children }) {
 
     useEffect(()=>{
         if(user){
-            localStorage.setItem("user",JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user));
         }else {
             localStorage.removeItem("user");
         }
     },[user]);
 
-    // Verify token and fetch fresh user details on application startup
     useEffect(()=>{
         if(!token) return;
 
@@ -44,14 +43,57 @@ export function AuthProvider({ children }) {
         }
         checkAuth();
     }, [token] );
-    const login = (newToken, newUser) => {
+
+    const mergeGuestCartToUserCart = async () => {
+        try {
+            const guestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+
+            if (!guestCart || guestCart.length === 0) {
+                return;
+            }
+
+            for (const item of guestCart) {
+                await api.post("/cart", {
+                    productId: item.id,
+                    quantity: item.quantity || 1
+                });
+            }
+
+            localStorage.removeItem("guestCart");
+        } catch (error) {
+            console.error("Failed to merge guest cart:", error);
+        }
+    };
+
+    const login = async (newToken, newUser) => {
+        // 1. Store token in localStorage synchronously so subsequent API calls use it
+        localStorage.setItem("token", newToken);
+        localStorage.setItem("user", JSON.stringify(newUser));
+        // 2. Merge guest cart items to the database
+        try {
+            await mergeGuestCartToUserCart();
+        } catch (error) {
+            console.error("Login cart merge failed:", error);
+        }
+        // 3. Update the state to trigger UI rendering
         setToken(newToken);
         setUser(newUser);
-    }
-    const register = (newToken, newUser)=>{
+    };
+
+    const register = async (newToken, newUser) => {
+        // 1. Store token in localStorage synchronously so subsequent API calls use it
+        localStorage.setItem("token", newToken);
+        localStorage.setItem("user", JSON.stringify(newUser));
+        // 2. Merge guest cart items to the database
+        try {
+            await mergeGuestCartToUserCart();
+        } catch (error) {
+            console.error("Register cart merge failed:", error);
+        }
+        // 3. Update the state to trigger UI rendering
         setToken(newToken);
         setUser(newUser);
-    }
+    };
     const logout = ()=>{
         setToken("");
         setUser(null);
@@ -63,8 +105,8 @@ export function AuthProvider({ children }) {
         isAuthenticated: Boolean(token),
         login,
         register,
-        logout,
+        logout
     };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

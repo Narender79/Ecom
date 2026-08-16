@@ -9,6 +9,7 @@ import com.narender.ecommerce.model.Product;
 import com.narender.ecommerce.model.ProductSale;
 import com.narender.ecommerce.repository.ProductRepository;
 import com.narender.ecommerce.repository.ProductSaleRepository;
+import com.narender.ecommerce.repository.CartItemRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -16,9 +17,18 @@ public class DataInitializer implements CommandLineRunner {
     private ProductRepository productRepository;
     @Autowired
     private ProductSaleRepository productSaleRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
+     // Delete dependent records first
+    productSaleRepository.deleteAll();
+    cartItemRepository.deleteAll();
+
+    // Now products can be deleted
+    productRepository.deleteAll();
+
             productRepository.save(new Product("Wirelss HeadPhones", "Electronics", 2999.0,
                     "https://img.magnific.com/free-psd/stylish-gray-white-headphones-music-audio-device_632498-46115.jpg?semt=ais_test_b&w=740&q=80",
                     true));
