@@ -8,22 +8,35 @@ export function CartProvider({ children }) {
     const [cartItems, setCartItems] = useState([]);
     const { isAuthenticated } = useContext(AuthContext);
 
-    // Fetch the database cart from backend when user is authenticated
+    // Save guest cart to localStorage whenever cart changes and user is not logged in
+    useEffect(() => {
+        if (!isAuthenticated) {
+            localStorage.setItem("guestCart", JSON.stringify(cartItems));
+        }
+    }, [cartItems, isAuthenticated]);
+
+    // Load guest cart when user is not logged in
+    useEffect(() => {
+        if (!isAuthenticated) {
+            const savedGuestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+            setCartItems(savedGuestCart);
+        }
+    }, [isAuthenticated]);  
+
     const fetchCart = useCallback(async () => {
         if (!isAuthenticated) {
-            setCartItems([]);
+            const savedGuestCart = JSON.parse(localStorage.getItem("guestCart") || "[]");
+            setCartItems(savedGuestCart);
             return;
         }
         try {
             const res = await api.get("/cart");
-            // res.data.data contains our flattened array of product items
             setCartItems(res.data.data || []);
-
         } catch (error) {
             console.error("Error fetching cart from backend: ", error);
+            setCartItems([]);
         }
     }, [isAuthenticated]);
-    // Re-load the cart whenever authentication state changes
 
     useEffect(() => {
         fetchCart();
@@ -31,11 +44,9 @@ export function CartProvider({ children }) {
 
     const addToCart = useCallback(async (product) => {
         if (!isAuthenticated) {
-            // Local fallback if not logged in
             setCartItems((prev) => {
                 const existing = prev.find((item) => item.id === product.id);
                 if (existing) {
-                    // if product already in cart , increase quantity
                     return prev.map((item) =>
                         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                     );
@@ -47,13 +58,12 @@ export function CartProvider({ children }) {
 
         try {
             await api.post("/cart", { productId: product.id, quantity: 1 });
-            fetchCart(); // Refresh state from database
+            fetchCart();
         } catch (error) {
             console.error("error adding to cart:", error);
         }
     }, [isAuthenticated, fetchCart]);
 
-    //remove item from cart entirely
     const removeFromCart = useCallback(async (productId) => {
         if (!isAuthenticated) {
             setCartItems((prev) => prev.filter((item) => item.id !== productId));
@@ -67,11 +77,10 @@ export function CartProvider({ children }) {
         }
     }, [isAuthenticated, fetchCart]);
 
-    //update quantity of item
-
     const updateQuantity = useCallback(async (productId, quantity) => {
         if (quantity <= 0) {
             removeFromCart(productId);
+            // return;
         }
         if (!isAuthenticated) {
             setCartItems((prev) =>
@@ -88,14 +97,12 @@ export function CartProvider({ children }) {
         }
     }, [isAuthenticated, removeFromCart, fetchCart]);
 
-    // clear entire cart
     const clearCart = useCallback(() => {
         setCartItems([]);
+        localStorage.removeItem("guestCart");
     }, []);
 
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-    //calculate total price
     const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const value = {
@@ -108,5 +115,5 @@ export function CartProvider({ children }) {
         totalPrice
     };
 
-    return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+    return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
