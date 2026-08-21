@@ -58,6 +58,10 @@ public class Routes {
 
                 .andRoute(GET("/api/orders"), req -> orderController.getOrders(req))
                 .andRoute(POST("/api/orders"), req -> orderController.createOrder(req))
-                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderById(req));
+                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderById(req))
+                .andRoute(GET("/api/orders"), req -> orderController.getOrders(req))
+                .andRoute(POST("/api/orders"), req -> orderController.createOrder(req))
+                .andRoute(GET("/api/orders/{id}"), req -> orderController.getOrderById(req))
+                .andRoute(POST("/api/orders/{id}/verify-payment"), req -> orderController.verifyPayment(req));
             }
 }
