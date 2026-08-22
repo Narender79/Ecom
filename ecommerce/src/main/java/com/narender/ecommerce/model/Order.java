@@ -43,6 +43,16 @@ public class Order {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+    @Column(name = "payment_method")
+    private String paymentMethod; // 
+    @Column(name = "payment_status")
+    private String paymentStatus;
+    @Column(name = "razorpay_order_id")
+    private String razorpayOrderId;
+    @Column(name = "razorpay_payment_id")
+    private String razorpayPaymentId;
+    @Column(name = "razorpay_signature")
+    private String razorpaySignature;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> items = new ArrayList<>();
@@ -88,4 +98,25 @@ public class Order {
         items.add(item);
         item.setOrder(this);
     }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String  paymentMethod){
+        this.paymentMethod = paymentMethod;
+    }
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+    public void setPaymentStatus(String paymentStatus){
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getRazorpayOrderId() { return razorpayOrderId; }
+    public void setRazorpayOrderId(String razorpayOrderId) { this.razorpayOrderId = razorpayOrderId; }
+    public String getRazorpayPaymentId() { return razorpayPaymentId; }
+    public void setRazorpayPaymentId(String razorpayPaymentId) { this.razorpayPaymentId = razorpayPaymentId; }
+    public String getRazorpaySignature() { return razorpaySignature; }
+    public void setRazorpaySignature(String razorpaySignature) { this.razorpaySignature = razorpaySignature; }
 }

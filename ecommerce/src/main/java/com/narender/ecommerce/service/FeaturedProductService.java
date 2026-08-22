@@ -11,7 +11,7 @@ import com.narender.ecommerce.repository.ProductRepository;
 import com.narender.ecommerce.repository.ProductSaleRepository;
 
 @Service
-public class FeaturedProductService {
+public class FeaturedProductService implements FeaturedProductInterface {
     @Autowired
     private ProductSaleRepository productSaleRepository;
 
